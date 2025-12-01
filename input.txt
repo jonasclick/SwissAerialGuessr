@@ -1,0 +1,12 @@
+Lorrainestrasse 5B, 3013 Bern;gibb
+Bundesplatz 3, 3005 Bern;Ausflugsziel
+Bahnhofplatz 10, 3011 Bern;Bahnhof
+Bahnhofplatz 15, 8001 Zürich;Bahnhof
+Heimplatz 1, 8001 Zürich;Kultur
+Grossmünsterplatz 8, 8001 Zürich;Ausflugsziel
+Quai Gustave-Ador 92, 1207 Genève;Ausflugsziel
+Klosterhof 6D, 9000 St. Gallen;Kultur
+Avenue de Chillon 21, 1820 Veytaux;Ausflugsziel
+Kapellplatz 1, 6004 Luzern;Ausflugsziel
+Rheinfallquai 30, 8212 Neuhausen am Rheinfall;Ausflugsziel
+Kirchstrasse 8, 3920 Zermatt;Kultur
