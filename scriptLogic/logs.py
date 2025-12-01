@@ -1,6 +1,9 @@
 import time
 from datetime import datetime, timedelta
 
+
+## ===== LOGGING in order to stay within API lmits =====
+
 logsInstructions = '''# NOTE: Do not change the contents or name of this file,
 # unless you know what you're doing.
 
@@ -19,6 +22,7 @@ def logRequest():
         logFile.write(f'\n{timestamp}')
 
 
+# Read and return logs from log file
 def getLogs():
     # Read the logs
     with open("./scriptLogic/logs.txt", "r", encoding="utf-8") as logFile:
@@ -61,8 +65,8 @@ def requestAllowed():
         return True
 
 
-# Stops execution until an API call can be safely made without
-# going over the api limit
+# Stops execution until an API call can be safely made
+# without going over the api limit
 def safeRequest():
     while not requestAllowed():
         print("Das Skript wartet, um den API-Dienst nicht zu überlasten...")

@@ -1,5 +1,7 @@
 import os
 
+## ====== HELPER FUNCTIONS =======
+
 # Format file path to not end on '/', for empty path return a default path
 def formatFilePath(path, defaultPath):
     match path:

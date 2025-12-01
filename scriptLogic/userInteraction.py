@@ -2,18 +2,17 @@ from scriptLogic.helperFunctions import formatFilePath
 import os
 import tempfile
 
+## ===== INTERACTIONS WITH USER ON CONSOLE =====
+
 # Display basic explanation about script
 def initialExplanationOfScript():
-    print("=== Reisebüro-Automatisierung                       ===")
-    print("=== Luftbilder abfragen und kategorisiert speichern ===")
+    print("===             SwissAreialGuessr                   ===")
+    print("=== Wie gut kennst du die Schweiz aus der Luft?     ===")
     print()
-
-    print("Struktur der Instruktionsdatei:")
-    print("[Adresse des Ortes];[Name des gewünschten Unterordners]")
-    print("Jeder Ort muss auf eine neue Zeile geschrieben werden.")
-    print("Zeilen, die mit '#' beginnen werden nicht beachtet.")
+    print("Dieses Spiel zeigt dir 10 Luftbilder von Orten in der Schweiz.")
+    print("Jeder korrekt erratene Ort gibt einen Punkt.")
+    print("Wie viele Orte kannst du erraten?")
     print()
-    print("Die Instruktionsdatei muss als 'input.txt' abgespeichert werden.")
     print()
 
 

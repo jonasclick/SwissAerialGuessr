@@ -5,6 +5,9 @@ from scriptLogic.helperFunctions import readUserInstruction, checkImageExisting
 from scriptLogic.logs import logRequest, safeRequest
 
 
+## ===== API (LOAD AN IMAGE FOR A GIVEN ADRESS) ======
+
+
 # Process one line of instruction: split instruction, get coordinates, get and save areial image
 def loadAerialImage(instruction, outputFolder):
 
