@@ -12,26 +12,6 @@ def test_db_connection():
     except Exception as e:
         print(f"Fehler bei der Verbindung: {e}")
 
-
-# select all places from db
-def get_all_locations():
-    try:
-        with engine.connect() as connection:
-            # text constructor to use sql language
-            query = text("SELECT Name, Adresse, Zoom, Level FROM ort;")
-
-            # run query on db
-            result = connection.execute(query)
-
-            # print results
-            print("\nAlle importierten Orte:")
-            for row in result:
-                # row is a tupel (or row-object), needs to be accessed as following
-                print(f"Name: {row.Name}, Adresse: {row.Adresse}, Level: {row.Level}")
-
-    except Exception as e:
-        print(f"Fehler bei der Abfrage: {e}")
-
 # Custom SELCT query
 def dbQuery(sqlQuery):
     try:

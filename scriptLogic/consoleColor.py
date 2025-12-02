@@ -3,7 +3,7 @@ from pathlib import Path
 
 ## ===== CONSOLE COLOR LOGIC ======
 
-PathToConfigFile = Path("./config.txt")
+PathToConfigFile = Path("./scriptLogic/config.txt")
 
 def writeConsoleColorConfig(colorCode):
     with open(PathToConfigFile, "w", encoding="utf-8") as configFile:

@@ -1,83 +1,76 @@
 import requests
-import re
 import os
-from scriptLogic.helperFunctions import readUserInstruction, checkImageExisting
 from scriptLogic.logs import logRequest, safeRequest
 
 
 ## ===== API (LOAD AN IMAGE FOR A GIVEN ADRESS) ======
 
-
-# Process one line of instruction: split instruction, get coordinates, get and save areial image
-# TODO: Might not be needed anymore
-def loadAerialImage(instruction, outputFolder):
-
-    # Split user instruction into location and folder name
-    locationFromInput, subfolder = readUserInstruction(instruction)
-
-    # If requested aerial image is already in output folder: save 2 api calls
-    if checkImageExisting(os.path.join(outputFolder, subfolder), locationFromInput):
-        return
-
-    # Get coordinates and full location name from API
-    x, y, locationFromAPI = requestGeoInformation(locationFromInput)
-
-    # if successful, get aerial image from API and save to folder
-    if x != '':
-        requestAndSaveImage(x, y, locationFromInput, outputFolder, subfolder, zoomLevel = 750)
-
-
 # Get coordinates and official name of a given location
-# TODO: Improve error handling.
 def requestGeoInformation(address):
-    # Check logs to stay within API limits and wait if necessary
-    safeRequest()
+    safeRequest() # Check logs to stay within API limits and wait if necessary
 
-    # URL of geocoding API endpoint of GeoAdmin
-    url = "https://api3.geo.admin.ch/rest/services/api/SearchServer"
+    try:
+        # URL of geocoding API endpoint of GeoAdmin
+        url = "https://api3.geo.admin.ch/rest/services/api/SearchServer"
 
-    # Parameters for the API Request
-    params = {
-        'searchText': address,  # Die Adresse, die geocodiert werden soll
-        'type': 'locations',  # Wir suchen nach geokodierten Orten
-        'limit': 1,  # Maximale Anzahl der Ergebnisse
-        'returnGeometry': 'true',  # Wir wollen die Geometrie (Koordinaten) im Ergebnis
-        'sr': '2056'  # Neue Landesvermessung (2...../1....)
-    }
+        # Parameters for the API Request
+        params = {
+            'searchText': address,  # Die Adresse, die geocodiert werden soll
+            'type': 'locations',  # Wir suchen nach geokodierten Orten
+            'limit': 1,  # Maximale Anzahl der Ergebnisse
+            'returnGeometry': 'true',  # Wir wollen die Geometrie (Koordinaten) im Ergebnis
+            'sr': '2056'  # Neue Landesvermessung (2...../1....)
+        }
 
-    # Send request
-    response = requests.get(url, params=params)
-    logRequest()
+        # Send request
+        response = requests.get(url, params=params)
+        logRequest()
 
-    # Case: Got valid answer
-    if response.status_code == 200:
-        data = response.json()
+        # Valid answer from API
+        if response.status_code == 200:
+            try:
+                data = response.json()
 
-        # Check if API found the requested location
-        if data['results']:
-            # Coordinates, in the swiss coordinate system 'Neue Landesvermessung'
-            x = float(data['results'][0]['attrs']['x'])
-            y = float(data['results'][0]['attrs']['y'])
+                # Check if API found the requested location
+                if data['results']:
+                    # Coordinates, in the swiss coordinate system 'Neue Landesvermessung'
+                    x = float(data['results'][0]['attrs']['x'])
+                    y = float(data['results'][0]['attrs']['y'])
 
-            # Official name of location
-            # locationNameRaw = data['results'][0]['attrs']['label']
-            # locationName = re.sub(r"<.*?>", "", locationNameRaw)
-            # print(f'Für den Ort "{locationFromUser}" wurde "{locationName}" gefunden.')
+                    # Official name of location
+                    # locationNameRaw = data['results'][0]['attrs']['label']
+                    # locationName = re.sub(r"<.*?>", "", locationNameRaw)
+                    # print(f'Für den Ort "{locationFromUser}" wurde "{locationName}" gefunden.')
+                    return x, y
 
-            return x, y
+                else:
+                    print(f'Für den Ort "{address}" kennt GeoAdmin leider keinen Eintrag.')
+                    return None
+            except Exception as e:
+                print(f'Fehler beim Lesen der Koordinaten in der Antwort der Search-Server-API: {e}')
+                return None
+
+        # Status Code from API raises an issue
         else:
-            print(f'Für den Ort "{address}" kennt GeoAdmin leider keinen Eintrag.')
-            return '', ''
-    else:
-        print(f"Für den Ort {address} ist folgender Fehler aufgetreten:")
-        print(f"{response.status_code} - {response.text}")
-        return '', ''
+            print(f"Für den Ort {address} ist folgender Fehler aufgetreten:")
+            print(f"{response.status_code} - {response.text}")
+            return None
+
+    # API can't be reached
+    except requests.exceptions.RequestException as e:
+        print(f"Die API konnte nicht erreicht werden (z.B. Netzwerkfehler) um die Koordinaten für {address} aufzulösen: {e}")
+        return None
+
+    # All other errors
+    except Exception as e:
+        print(f"Es ist ein unerwarteter Fehler während dem Auflösen der Koordinaten für {address} aufgetreten: {e}")
+        return None
+
 
 
 # Get aerial image for coordinates and save to given output folder with given file name
-def requestAndSaveImage(x, y, zoomLevel, fileName):
-    # Check logs to stay within API limits and wait if necessary
-    safeRequest()
+def requestAndSaveImage(x, y, zoomLevel, address, pathToImages):
+    safeRequest() # Check logs to stay within API limits and wait if necessary
 
     try:
 
@@ -116,32 +109,32 @@ def requestAndSaveImage(x, y, zoomLevel, fileName):
         if response.status_code == 200:
             try:
                 # Create output sub folder in case it doesn't exist yet
-                os.makedirs(f'./images', exist_ok=True)
+                os.makedirs(pathToImages, exist_ok=True)
 
                 # Save image
-                imagePath = f"./images/{fileName}.jpg"
+                imagePath = f"{pathToImages}/{address}.jpg"
                 with open(imagePath, "wb") as f:
                     f.write(response.content)
 
-                print(f"Luftbild für {fileName} erfolgreich heruntergeladen und als {imagePath} gespeichert.")
-                return imagePath
+                # print(f"Luftbild für {address} erfolgreich heruntergeladen und als {imagePath} gespeichert.")
+                return True
 
             # Error during saving of the received image
             except IOError as e:
-                print(f"Fehler beim speichern des Bildes für {fileName}.")
+                print(f"Fehler beim speichern des Bildes für {address}.")
 
         # API can be reached but reutrns error code
         else:
-            print(f"Die API gab während der Luftbildanfrage für {fileName} folgenden Fehler: {response.status_code} - {response.text}")
-            return None
+            print(f"Die API gab während der Luftbildanfrage für {address} folgenden Fehler: {response.status_code} - {response.text}")
+            return False
 
     # API can't be reached
     except requests.exceptions.RequestException as e:
-        print(f"Die API konnte nicht erreicht werden (z.B. Netzwerkfehler) für das Bild {fileName}: {e}")
-        return None
+        print(f"Die API konnte nicht erreicht werden (z.B. Netzwerkfehler) für das Bild {address}: {e}")
+        return False
 
     # All other errors
     except Exception as e:
-        print(f"Es ist ein unerwarteter Fehler während dem Laden des Bildes {fileName} aufgetreten: {e}")
-        return None
+        print(f"Es ist ein unerwarteter Fehler während dem Laden des Bildes {address} aufgetreten: {e}")
+        return False
 

@@ -4,7 +4,10 @@
 
 ### AerialGuessr: Files to be ignored ###
 images/
+scriptLogic/images
 aktuellesBild.jpg
+config.txt
+/scriptLogic/config.txt
 
 
 ### PyCharm ###

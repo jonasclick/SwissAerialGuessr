@@ -2,8 +2,7 @@
 
 import os
 import shutil
-from scriptLogic.userInteraction import initialExplanationOfScript, getInstructionsFromFile, getOutputPath, scriptEnd
-from scriptLogic.aerialLogic import loadAerialImage
+from scriptLogic.userInteraction import initialExplanationOfScript, scriptEnd
 from scriptLogic.logs import cleanUpLogs
 from scriptLogic.consoleColor import setUpConsoleColor
 from scriptLogic.query import dbQuery, dbInsertUpdateDelete
@@ -23,48 +22,52 @@ print("Eine Runde besteht aus 10 Bildern, die du erraten musst.")
 
 for i in range(10):
 
-    # TODO: Müsste man hier noch mit While loopen bis ein Bild gefunden wurde??
     foundImageToDisplay = False
     while not foundImageToDisplay:
         # Select a random place from the data base
         placeTupel = dbQuery("SELECT * FROM ort ORDER BY RAND() LIMIT 1;").first()
         if placeTupel is None:
             # Restart loop
+            print("Didn't get a place from DB. Trying again...")
             continue
-        print(placeTupel)
 
-        # if place doesn't have an associated path to it's image
-        # or place should reload it's image (updateFlag == 1)
-        if placeTupel.PfadBild is None or placeTupel.updateFlag == 1:
+        # Check if image needs to be loaded from API or from cache (= ./images)
+        imagesFolder = './scriptLogic/images'
+        imageName = f'{placeTupel.Adresse}.jpg'
+        pathToImage = os.path.join(imagesFolder, imageName)
+
+        # Should Image be loaded from API?
+        if not os.path.exists(pathToImage) or placeTupel.UpdateFlag == 1:
             print('Image needs to be (re)loaded.')
 
-            # If no path and no coordinates available: get coordinates
+            # no coordinates available? get coordinates
             if placeTupel.Ostwert is None or placeTupel.Nordwert is None:
                 # If no coordinates: Get coordinates from API
                 x, y = requestGeoInformation(placeTupel.Adresse)
-
+            else:
+                # DB already has coordinates for place, let's access them here:
+                x = placeTupel.Ostwert
+                y = placeTupel.Nordwert
 
             # Get Image for Coordinates (with zoom factor from DB) and save to images folder
-            imagePath = requestAndSaveImage(x, y, placeTupel.Zoom, placeTupel.Adresse)
-            if imagePath is not None:
-                foundImageToDisplay = True
+            foundImageToDisplay = requestAndSaveImage(x, y, placeTupel.Zoom, placeTupel.Adresse, imagesFolder)
+            if foundImageToDisplay:
                 # save image path to db
                 if dbInsertUpdateDelete(f"UPDATE ort SET Ostwert = {x}, Nordwert = {y}, updateFlag = 0 WHERE ID_Ort = {placeTupel.ID_Ort}"):
                     print("Successfully saved coordinates to DB.")
             else:
-                # Image couldn't be downloaded from API
+                print("Image couldn't be downloaded from API. Trying another place now.")
                 continue
         else:
-            # Got a place, place has path to image
+            # Image to place already exists in cache and doesn't need to be reloaded
             foundImageToDisplay = True
 
-    # place has a path to it's image:
     # Duplicate image to 'aktuelles_Bild.jpg'
     destinationPath = './aktuellesBild.jpg'
     try:
-        shutil.copy(imagePath, destinationPath)
+        shutil.copy(pathToImage, destinationPath)
     except FileNotFoundError:
-        print(f'Bild am Quellordner {imagePath} konnte nicht gefunden werden.')
+        print(f'Bild an der Quelle {pathToImage} konnte nicht gefunden werden.')
     except Exception as e:
         print(f'Allgemeiner Fehler beim Kopieren des Bildes: {e}')
 
@@ -74,24 +77,16 @@ for i in range(10):
     print("Öffne die Bilddatei und rate, was für ein Ort abgebildet ist.")
     rawGuess = input("Was ist hier für ein Ort abgebildet? ")
 
-# Get instructions from user
-instructionsList = getInstructionsFromFile()
+    # Process Answer of User
 
-# Get path to output folder for aerial images
-outputFolder = getOutputPath()
 
-# Create output folder if it doesn't exist yet
-os.makedirs(f'./{outputFolder}', exist_ok=True)
 
-# Get and save aerial image for each instruction
-for instruction in instructionsList:
-    if not instruction.startswith('#'): # Ignore commented lines
-        loadAerialImage(instruction, outputFolder)
+
+
+
 
 # Inform user about end of script
 scriptEnd()
-
-
 
 # CLEAN UP
 # only keep logs which are older than a day
