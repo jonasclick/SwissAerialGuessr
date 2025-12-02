@@ -1,13 +1,12 @@
 #!/usr/bin/env python3
 
+import re
 import os
-import shutil
+from scriptLogic.game import displayImage, checkAnswerUsingTokenSet
 from scriptLogic.userInteraction import initialExplanationOfScript, scriptEnd
 from scriptLogic.logs import cleanUpLogs
 from scriptLogic.consoleColor import setUpConsoleColor
-from scriptLogic.query import dbQuery, dbInsertUpdateDelete
-from scriptLogic.aerialLogic import requestGeoInformation, requestAndSaveImage
-
+from scriptLogic.query import dbInsertUpdateDelete
 
 # Set console color to user preference
 setUpConsoleColor()
@@ -16,68 +15,71 @@ setUpConsoleColor()
 initialExplanationOfScript()
 
 
-# Play one round of SwissAerialGuessr
+# Play SwissAerialGuessr
 print("==== EINE NEUE RUNDE BEGINNT =====")
 print("Eine Runde besteht aus 10 Bildern, die du erraten musst.")
+print("Viel Glück!")
+print("\n" * 4)
 
+score = 0
 for i in range(10):
 
-    foundImageToDisplay = False
-    while not foundImageToDisplay:
-        # Select a random place from the data base
-        placeTupel = dbQuery("SELECT * FROM ort ORDER BY RAND() LIMIT 1;").first()
-        if placeTupel is None:
-            # Restart loop
-            print("Didn't get a place from DB. Trying again...")
-            continue
+    # Get image and correct answer
+    print("Ein Luftbild wird geladen...")
 
-        # Check if image needs to be loaded from API or from cache (= ./images)
-        imagesFolder = './scriptLogic/images'
-        imageName = f'{placeTupel.Adresse}.jpg'
-        pathToImage = os.path.join(imagesFolder, imageName)
-
-        # Should Image be loaded from API?
-        if not os.path.exists(pathToImage) or placeTupel.UpdateFlag == 1:
-            print('Image needs to be (re)loaded.')
-
-            # no coordinates available? get coordinates
-            if placeTupel.Ostwert is None or placeTupel.Nordwert is None:
-                # If no coordinates: Get coordinates from API
-                x, y = requestGeoInformation(placeTupel.Adresse)
-            else:
-                # DB already has coordinates for place, let's access them here:
-                x = placeTupel.Ostwert
-                y = placeTupel.Nordwert
-
-            # Get Image for Coordinates (with zoom factor from DB) and save to images folder
-            foundImageToDisplay = requestAndSaveImage(x, y, placeTupel.Zoom, placeTupel.Adresse, imagesFolder)
-            if foundImageToDisplay:
-                # save image path to db
-                if dbInsertUpdateDelete(f"UPDATE ort SET Ostwert = {x}, Nordwert = {y}, updateFlag = 0 WHERE ID_Ort = {placeTupel.ID_Ort}"):
-                    print("Successfully saved coordinates to DB.")
-            else:
-                print("Image couldn't be downloaded from API. Trying another place now.")
-                continue
-        else:
-            # Image to place already exists in cache and doesn't need to be reloaded
-            foundImageToDisplay = True
-
-    # Duplicate image to 'aktuelles_Bild.jpg'
-    destinationPath = './aktuellesBild.jpg'
-    try:
-        shutil.copy(pathToImage, destinationPath)
-    except FileNotFoundError:
-        print(f'Bild an der Quelle {pathToImage} konnte nicht gefunden werden.')
-    except Exception as e:
-        print(f'Allgemeiner Fehler beim Kopieren des Bildes: {e}')
+    answer = displayImage()
+    if answer is None:
+        # Error while getting image and answer
+        print("In diesem Durchgang konnte kein Luftbild geladen werden.")
+        continue
 
 
     # Ask Answer from User
     print("Die Bilddatei 'aktuelles_Bild.jpg' liegt nun im Verzeichnis in dem auch dieses Skript liegt.")
     print("Öffne die Bilddatei und rate, was für ein Ort abgebildet ist.")
-    rawGuess = input("Was ist hier für ein Ort abgebildet? ")
+    print()
 
-    # Process Answer of User
+    rawGuess = ''
+    validAnswer = False
+    while not validAnswer:
+        rawGuess = input("Was ist hier für ein Ort abgebildet? ")
+
+        # validate answer of User (Regex)
+        forbiddenChars = re.search(r"[!#$%()*+:;<=>?@_{|}§€£¥¡¿«»]", rawGuess)
+        if not forbiddenChars:
+            validAnswer = True
+        else:
+            print("Die Eingabe war ungültig. Bitte keine Sonderzeichen eingeben.")
+
+    # Process answer
+    isCorrect = checkAnswerUsingTokenSet(rawGuess, answer, similarityTreshold=70)
+    if isCorrect:
+        score += 1
+        print("==== Korrekt! ====")
+    else:
+        print("Leider nicht korrekt.")
+
+    print(f"Der Gesuchte Ort war {answer}.")
+    print("\n" * 3)
+    input("Drücke 'Enter', um das nächste Bild zu laden.")
+
+    # Clear screen ('cls' on Windows, 'clear' on UNIX)
+    os.system('cls' if os.name == 'nt' else 'clear')
+
+
+# End of Game
+print("===== DIE RUNDE IST VORBEI =======")
+print(f"Du hast {score} von 10 Punkten erzielt.")
+
+dbInsertUpdateDelete(f"INSERT INTO spiel (Punktzahl) VALUES ({score});")
+
+
+
+
+
+
+
+
 
 
 
