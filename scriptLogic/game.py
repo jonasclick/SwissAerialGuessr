@@ -1,4 +1,5 @@
 import os
+import re
 import shutil
 from fuzzywuzzy import fuzz
 from scriptLogic.api import requestGeoInformation, requestAndSaveImage

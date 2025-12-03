@@ -97,8 +97,8 @@ def requestAndSaveImage(x, y, zoomLevel, address, pathToImages):
             "TRANSPARENT": "FALSE",
             "CRS": "EPSG:2056",
             "BBOX": f"{bbox}",
-            "WIDTH": "800",
-            "HEIGHT": "800"
+            "WIDTH": "4000",
+            "HEIGHT": "4000"
         }
 
         # Send request

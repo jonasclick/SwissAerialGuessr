@@ -1,5 +1,4 @@
-import os
-import tempfile
+import re
 
 ## ===== INTERACTIONS WITH USER ON CONSOLE =====
 
@@ -15,10 +14,23 @@ def initialExplanationOfScript():
     print()
 
 
+# Get answer from user and check with Regex
+def getValidAnswer():
+    rawGuess = ''
 
+    validAnswer = False
+    while not validAnswer:
+        rawGuess = input("Was ist hier für ein Ort abgebildet? ")
 
-# Script end text
-def scriptEnd():
-    print() # Empty line for better visual separation on console
-    print('Das Skript hat alle Instruktionen verarbeitet und endet nun.')
+        if rawGuess == '':
+            print("Bitte keine leere Eingabe machen.")
+            continue
 
+        # validate answer of User (Regex)
+        forbiddenChars = re.search(r"[!#$%()*+:;<=>?@_{|}§€£¥¡¿«»]", rawGuess)
+        if not forbiddenChars:
+            validAnswer = True
+        else:
+            print("Bitte keine Sonderzeichen eingeben.")
+
+    return rawGuess
