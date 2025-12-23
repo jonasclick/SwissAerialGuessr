@@ -8,6 +8,12 @@ from scriptLogic.logs import cleanUpLogs
 from scriptLogic.consoleColor import setUpConsoleColor
 from scriptLogic.query import dbInsertUpdateDelete, dbQuery
 
+# BASIC INFO ABOUT SCRIPT
+# Kommentare: Am Anfang von wem, wozu? wie aufrufen und ggf. noch Versionen (Änderungshiostorie)
+
+# Security und Integration: Nutzer soll rw auf config haben und x auf skript. Skript ohne rw, das ist sicherer.
+
+
 # Set console color to user preference
 setUpConsoleColor()
 
