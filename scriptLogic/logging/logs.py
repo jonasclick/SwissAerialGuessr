@@ -14,10 +14,11 @@ logsInstructions = '''# NOTE: Do not change the contents or name of this file,
 
 '''
 
+pathToLogFile = "./scriptLogic/logging/logs.txt"
 
 # Log the timestamp of a request to logfile
 def logRequest():
-    with open("./scriptLogic/logging.txt", "a", encoding="utf-8") as logFile:
+    with open(pathToLogFile, "a", encoding="utf-8") as logFile:
         timestamp = datetime.now()
         logFile.write(f'\n{timestamp}')
 
@@ -25,7 +26,7 @@ def logRequest():
 # Read and return logging from log file
 def getLogs():
     # Read the logging
-    with open("./scriptLogic/logging.txt", "r", encoding="utf-8") as logFile:
+    with open(pathToLogFile, "r", encoding="utf-8") as logFile:
         logData = logFile.read()
 
     cleanLogs = []
@@ -79,7 +80,7 @@ def cleanUpLogs():
 
     recentLogs = [log for log in logs if datetime.fromisoformat(log) >= oneDayAgo]
 
-    with open("./scriptLogic/logging.txt", "w", encoding="utf-8") as logFile:
+    with open(pathToLogFile, "w", encoding="utf-8") as logFile:
         logFile.write(logsInstructions)
 
         for log in recentLogs:
