@@ -32,7 +32,7 @@ while endScriptCondition == '':
     for i in range(10):
 
         # Get image and correct answer
-        print("Ein Luftbild wird geladen...")
+        print("Ein Luftbild wird vorbereitet...")
 
         answer = displayImage()
         if answer is None:
@@ -42,7 +42,7 @@ while endScriptCondition == '':
 
 
         # Ask Answer from User
-        print("Die Bilddatei 'aktuelles_Bild.jpg' liegt nun im Verzeichnis in dem auch dieses Skript liegt.")
+        print("Die Bilddatei 'aktuellesBild.jpg' liegt nun im Verzeichnis in dem auch dieses Skript liegt.")
         print("Öffne die Bilddatei und rate, was für ein Ort abgebildet ist.")
         print()
         rawGuess = getValidAnswer()

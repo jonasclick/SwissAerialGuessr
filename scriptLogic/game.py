@@ -26,16 +26,16 @@ def displayImage():
         imageName = f'{placeTupel.Adresse}.jpg'
         pathToImage = os.path.join(imagesFolder, imageName)
 
-        # Should Image be loaded from API?
+        # Should Image be downloaded through the API?
         if not os.path.exists(pathToImage) or placeTupel.UpdateFlag == 1:
-            print('Image needs to be (re)loaded.')
+            # Image for this place needs to be downloaded (either not in cache or update flag)
 
-            # no coordinates available? get coordinates
+            # Coordinates already in DB?
             if placeTupel.Ostwert is None or placeTupel.Nordwert is None:
-                # If no coordinates: Get coordinates from API
+                # No coordinates in DB: Get coordinates from API
                 x, y = requestGeoInformation(placeTupel.Adresse)
             else:
-                # DB already has coordinates for place, let's access them here:
+                # Coordinates in DB: let's access them here
                 x = placeTupel.Ostwert
                 y = placeTupel.Nordwert
 
