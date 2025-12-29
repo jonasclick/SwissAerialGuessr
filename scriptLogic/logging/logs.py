@@ -17,15 +17,15 @@ logsInstructions = '''# NOTE: Do not change the contents or name of this file,
 
 # Log the timestamp of a request to logfile
 def logRequest():
-    with open("./scriptLogic/logs.txt", "a", encoding="utf-8") as logFile:
+    with open("./scriptLogic/logging.txt", "a", encoding="utf-8") as logFile:
         timestamp = datetime.now()
         logFile.write(f'\n{timestamp}')
 
 
-# Read and return logs from log file
+# Read and return logging from log file
 def getLogs():
-    # Read the logs
-    with open("./scriptLogic/logs.txt", "r", encoding="utf-8") as logFile:
+    # Read the logging
+    with open("./scriptLogic/logging.txt", "r", encoding="utf-8") as logFile:
         logData = logFile.read()
 
     cleanLogs = []
@@ -44,7 +44,7 @@ def getLogs():
     return cleanLogs
 
 
-# Read logs and check if more than 20 requests have been made in the past minute
+# Read logging and check if more than 20 requests have been made in the past minute
 def requestAllowed():
     # API Rate limit in requests per Minute
     requestsPerMinuteAllowed = 20
@@ -79,7 +79,7 @@ def cleanUpLogs():
 
     recentLogs = [log for log in logs if datetime.fromisoformat(log) >= oneDayAgo]
 
-    with open("./scriptLogic/logs.txt", "w", encoding="utf-8") as logFile:
+    with open("./scriptLogic/logging.txt", "w", encoding="utf-8") as logFile:
         logFile.write(logsInstructions)
 
         for log in recentLogs:

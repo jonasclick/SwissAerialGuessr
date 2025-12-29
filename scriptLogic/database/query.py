@@ -1,5 +1,5 @@
 from sqlalchemy import text
-from scriptLogic.engine import engine
+from scriptLogic.database.engine import engine
 
 # Test db connection
 def test_db_connection():
@@ -19,7 +19,7 @@ def dbQuery(sqlQuery):
             query = text(sqlQuery)
             return connection.execute(query)
     except Exception as e:
-        print(f"Fehler bei der SQL-Abfrag   e: {e}")
+        print(f"Fehler bei der SQL-Abfrage: {e}")
         return None
 
 # Custom INSERT query

@@ -7,7 +7,7 @@ images/
 scriptLogic/images
 aktuellesBild.jpg
 config.txt
-/scriptLogic/config.txt
+/scriptLogic/consolecolor/config.txt
 
 
 ### PyCharm ###
@@ -161,7 +161,7 @@ MANIFEST
 *.manifest
 *.spec
 
-# Installer logs
+# Installer logging
 pip-log.txt
 pip-delete-this-directory.txt
 

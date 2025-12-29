@@ -1,13 +1,13 @@
 import requests
 import os
-from scriptLogic.logs import logRequest, safeRequest
+from scriptLogic.logging.logs import logRequest, safeRequest
 
 
 ## ===== API (LOAD AN IMAGE FOR A GIVEN ADRESS) ======
 
 # Get coordinates and official name of a given location
 def requestGeoInformation(address):
-    safeRequest() # Check logs to stay within API limits and wait if necessary
+    safeRequest() # Check logging to stay within API limits and wait if necessary
 
     try:
         # URL of geocoding API endpoint of GeoAdmin
@@ -70,7 +70,7 @@ def requestGeoInformation(address):
 
 # Get aerial image for coordinates and save to given output folder with given file name
 def requestAndSaveImage(x, y, zoomLevel, address, pathToImages):
-    safeRequest() # Check logs to stay within API limits and wait if necessary
+    safeRequest() # Check logging to stay within API limits and wait if necessary
 
     try:
 

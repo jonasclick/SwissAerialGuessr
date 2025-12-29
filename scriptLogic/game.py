@@ -3,7 +3,7 @@ import re
 import shutil
 from fuzzywuzzy import fuzz
 from scriptLogic.api import requestGeoInformation, requestAndSaveImage
-from scriptLogic.query import dbInsertUpdateDelete, dbQuery
+from scriptLogic.database.query import dbInsertUpdateDelete, dbQuery
 
 
 
@@ -43,7 +43,7 @@ def displayImage():
             foundImageToDisplay = requestAndSaveImage(x, y, placeTupel.Zoom, placeTupel.Adresse, imagesFolder)
             if foundImageToDisplay:
                 # save image path to db
-                if dbInsertUpdateDelete(f"UPDATE ort SET Ostwert = {x}, Nordwert = {y}, updateFlag = 0 WHERE ID_Ort = {placeTupel.ID_Ort}"):
+                if dbInsertUpdateDelete(f"UPDATE ort SET Ostwert = {x}, Nordwert = {y}, UpdateFlag = 0 WHERE ID_Ort = {placeTupel.ID_Ort}"):
                     print("Successfully saved coordinates to DB.")
             else:
                 print("Image couldn't be downloaded from API. Trying another place now.")

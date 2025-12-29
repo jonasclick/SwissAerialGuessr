@@ -1,12 +1,11 @@
 #!/usr/bin/env python3
 
-import re
 import os
 from scriptLogic.game import displayImage, checkAnswerUsingTokenSet
 from scriptLogic.userInteraction import initialExplanationOfScript, getValidAnswer
-from scriptLogic.logs import cleanUpLogs
-from scriptLogic.consoleColor import setUpConsoleColor
-from scriptLogic.query import dbInsertUpdateDelete, dbQuery
+from scriptLogic.logging.logs import cleanUpLogs
+from scriptLogic.consolecolor.consoleColor import setUpConsoleColor
+from scriptLogic.database.query import dbInsertUpdateDelete, dbQuery
 
 # BASIC INFO ABOUT SCRIPT
 # Kommentare: Am Anfang von wem, wozu? wie aufrufen und ggf. noch Versionen (Änderungshiostorie)
@@ -88,7 +87,7 @@ while endScriptCondition == '':
 
 
 # CLEAN UP
-# Delete logs older than a day
+# Delete logging older than a day
 cleanUpLogs()
 
 # Reset console color to default
