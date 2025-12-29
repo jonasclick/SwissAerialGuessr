@@ -60,7 +60,7 @@ while endScriptCondition == '':
 
         print(f"Der Gesuchte Ort war {answer}.")
         print("\n" * 3)
-        input("Drücke 'Enter', um das nächste Bild zu laden.")
+        # input("Drücke 'Enter', um das nächste Bild zu laden.")
 
         # Clear screen ('cls' on Windows, 'clear' on UNIX)
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -78,7 +78,7 @@ while endScriptCondition == '':
     statsTupel = dbQuery("SELECT COUNT(*) AS Anzahl, AVG(Punktzahl) AS Durchschnitt FROM spiel;").first()
     if statsTupel is not None:
         print(f"Du hast total {statsTupel.Anzahl} Spiele gespielt.")
-        print(f"Du hast durchschnittlich {statsTupel.Durchschnitt} erreicht.")
+        print(f"Du hast durchschnittlich {statsTupel.Durchschnitt:.2f} Punkte erreicht.")
         print("\n" * 3)
 
     print("Um nochmal eine Runde zu spielen drücke 'Enter'.")

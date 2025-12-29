@@ -1,0 +1,37 @@
+Komisch gespeicherte Orte:
+
+
+Adresse ist falsch:
+- Schloss Laufen
+- Bahnhof Hinwil
+- flugplatz emmen
+- Bahnhof Locarno
+- Bahnhof Lenzburg
+- Bhf Gossau
+- Vögele Kultur Zentrum.
+- bahnhof muttenz
+- bhf langenthal
+Bahnhof Moutier
+
+
+Adresse könnte schöner:
+- Bahnhof Thalwil
+
+
+
+Validierungsfehler:
+Was ist hier für ein Ort abgebildet? Bahnhof Aarau
+Deine Antwort hat eine Ähnlichkeit von 74% zum gesuchten Ort.
+==== Korrekt! ====
+Der Gesuchte Ort war Bahnhof Visp.
+
+
+
+Was ist hier für ein Ort abgebildet? Schloss
+Deine Antwort hat eine Ähnlichkeit von 100% zum gesuchten Ort.
+==== Korrekt! ====
+Der Gesuchte Ort war Schloss Lenzburg.
+
+
+Division / 0 falls keine Statistik verfügbar.
+Damit es nicht abstürzt, falls noch nie ein Spiel in der DB gespeichert wurde (Division durch Null oder None-Werte), empfehle ich dir diesen Aufbau am Ende deiner while-Schleife:
