@@ -2,7 +2,7 @@ import time
 from datetime import datetime, timedelta
 
 
-## ===== LOGGING in order to stay within API lmits =====
+## ===== LOGGING in order to stay within API limits =====
 
 logsInstructions = '''# NOTE: Do not change the contents or name of this file,
 # unless you know what you're doing.

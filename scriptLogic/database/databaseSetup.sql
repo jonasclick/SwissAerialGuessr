@@ -35,3 +35,7 @@ LOAD DATA LOCAL INFILE 'orteRaw.csv'
     IGNORE 1 LINES
     (Name, Adresse, Zoom)
     SET UpdateFlag = 0;
+
+select * from ort
+where Nordwert is not null;
+

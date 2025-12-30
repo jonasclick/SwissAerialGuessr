@@ -8,7 +8,7 @@ from scriptLogic.consolecolor.consoleColor import setUpConsoleColor
 from scriptLogic.database.query import dbInsertUpdateDelete, dbQuery
 
 # BASIC INFO ABOUT SCRIPT
-# Kommentare: Am Anfang von wem, wozu? wie aufrufen und ggf. noch Versionen (Änderungshiostorie)
+# Kommentare: Am Anfang von wem, wozu? wie aufrufen und ggf. noch Versionen (Änderungshistorie)
 
 # Security und Integration: Nutzer soll rw auf config haben und x auf skript. Skript ohne rw, das ist sicherer.
 
@@ -16,7 +16,7 @@ from scriptLogic.database.query import dbInsertUpdateDelete, dbQuery
 # Set console color to user preference
 setUpConsoleColor()
 
-# Disply basic explanation about script to user
+# Display basic explanation about script to user
 initialExplanationOfScript()
 
 # Restart a new game until user wants to end script
@@ -29,13 +29,15 @@ while endScriptCondition == '':
     print("\n" * 4)
 
     score = 0
-    for i in range(10):
+    numberOfRounds = 10
+    for i in range(numberOfRounds):
 
+        print(f'====== BILD {i+1} VON {numberOfRounds} ======')
         # Get image and correct answer
         print("Ein Luftbild wird vorbereitet...")
 
-        answer = displayImage()
-        if answer is None:
+        placeToGuess = displayImage()
+        if placeToGuess is None:
             # Error while getting image and answer
             print("In diesem Durchgang konnte kein Luftbild geladen werden.")
             continue
@@ -51,14 +53,14 @@ while endScriptCondition == '':
 
 
         # Process answer
-        isCorrect = checkAnswerUsingTokenSet(rawGuess, answer, similarityTreshold=70)
+        isCorrect = checkAnswerUsingTokenSet(rawGuess, placeToGuess, similarityTreshold=78)
         if isCorrect:
             score += 1
             print("==== Korrekt! ====")
         else:
-            print("Leider nicht korrekt.")
+            print("==== Leider nicht korrekt. ====")
 
-        print(f"Der Gesuchte Ort war {answer}.")
+        print(f"Der Gesuchte Ort war {placeToGuess}.")
         print("\n" * 3)
         # input("Drücke 'Enter', um das nächste Bild zu laden.")
 
@@ -68,7 +70,7 @@ while endScriptCondition == '':
 
     # End of Game
     print("===== DIE RUNDE IST VORBEI =======")
-    print(f"Du hast {score} von 10 Punkten erzielt.")
+    print(f"Du hast {score} von {numberOfRounds} Punkten erzielt.")
     print("\n" * 3)
 
     # Save score to DB
