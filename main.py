@@ -7,11 +7,23 @@ from scriptLogic.logging.logs import cleanUpLogs
 from scriptLogic.consolecolor.consoleColor import setUpConsoleColor
 from scriptLogic.database.query import dbInsertUpdateDelete, dbQuery
 
-# BASIC INFO ABOUT SCRIPT
-# Kommentare: Am Anfang von wem, wozu? wie aufrufen und ggf. noch Versionen (Änderungshistorie)
+"""
+================================================================================
+PROJECT:        SwissAerialGuessr
+AUTHOR:         Jonas Vetsch, jve161514@stud.gibb.ch
+VERSION:        1.2.0 (2025-12-30)
+DESCRIPTION:    Interaktives Ratespiel basierend auf Schweizer Luftbildern (©swisstopo).
+                Nutzt die GeoAdmin API (WMS) und fuzzywuzzy zur Validierung der Antworten.
 
-# Security und Integration: Nutzer soll rw auf config haben und x auf skript. Skript ohne rw, das ist sicherer.
+USAGE:          Datenbank erstellen und Daten importieren gemäss ./scriptLogic/database
+                Mit Python das Skript ./main.py ausführen (Benötigt Python 3.x und die Abhängigkeiten unter ./requirements.txt)
 
+VERSIONS:        
+  2025-12-30: v1.2.0 - Verbesserung der Nutzerführung und Spiellogik
+  2025-12-21: v1.1.0 - Grundlegende Spiellogik funktioniert zusammen mit der Datenbank
+  2025-12-15: v1.0.0 - Erster Prototyp als proof of concept
+================================================================================
+"""
 
 # Set console color to user preference
 setUpConsoleColor()

@@ -11,6 +11,9 @@ def initialExplanationOfScript():
     print("Jeder korrekt erratene Ort gibt einen Punkt.")
     print("Wie viele Orte kannst du erraten?")
     print()
+    print('Die Quelle aller gezeigten Luftbilder ist ©swisstopo.')
+    print('Weitere Infos unter: https://www.swisstopo.admin.ch/de/analoge-luftbilder')
+    print()
     print()
 
 

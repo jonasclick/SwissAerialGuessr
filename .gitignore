@@ -5,6 +5,7 @@
 ### AerialGuessr: Files to be ignored ###
 images/
 scriptLogic/images
+addressChecker/
 aktuellesBild.jpg
 config.txt
 /scriptLogic/consolecolor/config.txt

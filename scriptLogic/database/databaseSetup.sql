@@ -1,7 +1,6 @@
 create database swissaerialguessr;
 use swissaerialguessr;
 
-drop table ort;
 create table ort (
     ID_Ort int primary key auto_increment,
     Name varchar(250) not null,
@@ -18,24 +17,15 @@ CREATE TABLE spiel (
     Zeitstempel timestamp DEFAULT CURRENT_TIMESTAMP
 );
 
-
-# Testdata:
-INSERT INTO ort (Name, Adresse, Zoom) VALUES
-      ('Bundeshaus', 'Bundesplatz 3, 3003 Bern', 400),
-      ('Prime Tower', 'Hardstrasse 201, 8005 Zürich', 500),
-      ('Jet d Eau', 'Quai Gustave-Ador, 1207 Genève', 800),
-      ('Schloss Chillon', 'Avenue de Chillon 21, 1820 Veytaux', 600);
-
-
-# Production Data:
-LOAD DATA LOCAL INFILE 'orteRaw.csv'
+# Import Game Data:
+LOAD DATA LOCAL INFILE './tabelleOrte.csv'
     INTO TABLE ort
     FIELDS TERMINATED BY ';'
     LINES TERMINATED BY '\n'
     IGNORE 1 LINES
-    (Name, Adresse, Zoom)
-    SET UpdateFlag = 0;
+    (ID_Ort, Name, Adresse, Nordwert, Ostwert, Zoom);
 
 select * from ort
-where Nordwert is not null;
+where Name like '%Bahnhof%';
 
+select * from ort;
