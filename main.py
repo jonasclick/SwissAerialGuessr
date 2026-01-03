@@ -11,7 +11,7 @@ from scriptLogic.database.query import dbInsertUpdateDelete, dbQuery
 ================================================================================
 PROJECT:        SwissAerialGuessr
 AUTHOR:         Jonas Vetsch, jve161514@stud.gibb.ch
-VERSION:        1.2.0 (2025-12-30)
+VERSION:        1.4.0 (2025-12-30)
 DESCRIPTION:    Interaktives Ratespiel basierend auf Schweizer Luftbildern (©swisstopo).
                 Nutzt die GeoAdmin API (WMS) und fuzzywuzzy zur Validierung der Antworten.
 
@@ -19,9 +19,12 @@ USAGE:          Datenbank erstellen und Daten importieren gemäss ./scriptLogic/
                 Mit Python das Skript ./main.py ausführen (Benötigt Python 3.x und die Abhängigkeiten unter ./requirements.txt)
 
 VERSIONS:        
-  2025-12-30: v1.2.0 - Verbesserung der Nutzerführung und Spiellogik
-  2025-12-21: v1.1.0 - Grundlegende Spiellogik funktioniert zusammen mit der Datenbank
-  2025-12-15: v1.0.0 - Erster Prototyp als proof of concept
+    2025-12-30: v1.4.0 – Optimierung der Validierung & Fuzzy Matching
+    2025-12-29: v1.3.1 – Fix der Daten-Synchronisation
+    2025-12-22: v1.3.0 – Datenbank vergrössern und bereinigen
+    2025-12-18: v1.2.0 – Robustheit & Errorhandling
+    2025-12-15: v1.1.0 – Datenbank-Anbindung & Datenverarbeitung
+    2025-12-08: v1.0.0 – Initialer Prototyp (Proof of Concept)
 ================================================================================
 """
 
@@ -75,10 +78,6 @@ while endScriptCondition == '':
         print(f"Der Gesuchte Ort war {placeToGuess}.")
         print("\n" * 3)
         # input("Drücke 'Enter', um das nächste Bild zu laden.")
-
-        # Clear screen ('cls' on Windows, 'clear' on UNIX)
-        os.system('cls' if os.name == 'nt' else 'clear')
-
 
     # End of Game
     print("===== DIE RUNDE IST VORBEI =======")
