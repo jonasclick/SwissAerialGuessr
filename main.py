@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 
 import os
+import time
+
 from scriptLogic.game import displayImage, checkAnswerUsingTokenSet
 from scriptLogic.userInteraction import initialExplanationOfScript, getValidAnswer
 from scriptLogic.logging.logs import cleanUpLogs
@@ -77,7 +79,7 @@ while endScriptCondition == '':
 
         print(f"Der Gesuchte Ort war {placeToGuess}.")
         print("\n" * 3)
-        # input("Drücke 'Enter', um das nächste Bild zu laden.")
+        time.sleep(2)
 
     # End of Game
     print("===== DIE RUNDE IST VORBEI =======")
