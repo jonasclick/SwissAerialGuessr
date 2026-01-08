@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-import os
 import time
 
 from scriptLogic.game import displayImage, checkAnswerUsingTokenSet

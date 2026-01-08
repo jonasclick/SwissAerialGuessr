@@ -23,8 +23,6 @@ def dbQuery(sqlQuery):
         return None
 
 # Custom INSERT query
-# ATTENTION: This is vulnerable to SQL-Injection,
-# do not copy paste this function in productive systems
 def dbInsertUpdateDelete(sqlQuery):
     try:
         with engine.connect() as connection:
