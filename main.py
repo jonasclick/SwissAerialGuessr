@@ -17,8 +17,9 @@ VERSION:        1.4.0 (2025-12-30)
 DESCRIPTION:    Interaktives Ratespiel basierend auf Schweizer Luftbildern (©swisstopo).
                 Nutzt die GeoAdmin API (WMS) und fuzzywuzzy zur Validierung der Antworten.
 
-USAGE:          Datenbank erstellen und Daten importieren gemäss ./scriptLogic/database
-                Mit Python das Skript ./main.py ausführen (Benötigt Python 3.x und die Abhängigkeiten unter ./requirements.txt)
+USAGE:          1. Requirements im venv installieren: pip install -r requirements.txt
+                2. Datenbank erstellen und Daten importieren gemäss ./scriptLogic/database
+                3. Mit Python das Skript ./main.py ausführen (Benötigt Python 3.x und die Abhängigkeiten unter ./requirements.txt)
 
 VERSIONS:        
     2025-12-30: v1.4.0 – Optimierung der Validierung & Fuzzy Matching
