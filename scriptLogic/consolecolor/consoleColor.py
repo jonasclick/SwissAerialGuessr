@@ -40,5 +40,5 @@ def setUpConsoleColor():
     # Set console color to user preference
     with open(PathToConfigFile, "r", encoding="utf-8") as configFile:
         colorCode = configFile.read().strip()
-        # Set conosle to desired color
+        # Set consle to desired color
         print(colorCode)
